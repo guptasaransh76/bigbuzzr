@@ -1,0 +1,73 @@
+.partition {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.bankPage {
+    overflow: hidden;
+}
+
+.head {
+    position:fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 7vh;
+    width: 100vw;
+    background-color: #f9f9f9;
+    align-items: center;
+}
+
+.bankTitle {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.bankName {
+    margin-left: 2vh;
+    width: 60vw;
+}
+
+.bankEditButton {
+}
+
+.bankOptions {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1vw;
+}
+
+.left {
+    display: flex;
+    width: 30vw;
+    height: 85vh;
+    background-color: #f9f9f9;
+    flex-direction: column;
+}
+
+.right {
+    width: 70vw;
+    padding-top: 9vh;
+}
+
+.box {
+    margin-left: 10vw;
+    margin-top: 5vh;
+    width: 50vw;
+}
+
+.addop {
+    margin-top: -3vh;
+}
+
+.leftbox {
+    background-color: white;
+}
+
+.jumbo {
+    margin-right: auto;
+    margin-left: auto;
+    width: 70vw;
+    padding-top: 7vh;
+    padding-bottom: 5vh;
+}

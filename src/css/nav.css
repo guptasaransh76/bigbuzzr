@@ -1,0 +1,42 @@
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    height: 10vh;
+    padding-left: 2vw;
+}
+
+.title {
+    display: flex;
+    font-family: Baskerville, monospace;
+    color: #dddddd;
+}
+
+.item {
+    color: blue;
+    cursor: pointer;
+}
+
+.scorecard {
+    display: flex;
+    width: 60vw;
+}
+
+.navItems {
+     color: #dddddd;
+     margin-right: 2vw;
+ }
+
+.nonNavItems {
+    color: #dddddd;
+    margin-right: 2vw;
+    cursor: default;
+}
+
+.score {
+    background-color: darkgray;
+    width: 17vw;
+    height: 8vh;
+    margin-right: 1vw;
+}

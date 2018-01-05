@@ -1,0 +1,24 @@
+.form {
+    margin-right: auto;
+    margin-left: auto;
+    width: 40vw;
+    padding-top: 5vh;
+}
+
+.jumbo {
+    margin-right: auto;
+    margin-left: auto;
+    width: 70vw;
+    padding-top: 5vh;
+}
+
+.input {
+    font-size: large;
+}
+
+.btn {
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+    margin-top: 3vh;
+}

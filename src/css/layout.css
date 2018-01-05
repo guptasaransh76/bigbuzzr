@@ -1,0 +1,34 @@
+.page {
+    overflow: hidden;
+}
+
+.head {
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+    background-color: black;
+    padding-right: 1vw;
+    height: 10vh;
+}
+
+.body {
+    width: 100%;
+    margin-top: 10vh;
+    height: 85vh;
+    overflow: scroll;
+}
+
+.foot {
+    display: flex;
+    align-content: center;
+    padding-left: 20px;
+    padding-top: 10px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 40px;
+    width: 100%;
+    background-color: black;
+    color: #dddddd;
+    z-index: 2000;
+}
