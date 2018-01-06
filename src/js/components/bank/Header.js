@@ -8,50 +8,57 @@ import style from "../../../css/bank.css";
 
 export default class Header extends React.Component {
   render() {
-
-    if (this.props.onCreate) {
+    if (this.props.onCreate || this.props.inView) {
       return (
         <div className={style.head}>
-
-          <div className={style.bankTitle}>
-            {
-              !this.props.isBankNameEditting &&
-              <div
-                className={style.bankName}
-                style={!this.props.isBankNameEditting ? {'borderBottom': '1px solid grey'} : {}}
-                onClick={() => this.props.handleBankNameEditToggle(true)}
-              >
-                {
-                  this.props.bankName === '' &&
-                  "Enter bank name"
-                }
-                {
-                  this.props.bankName !== '' &&
-                  this.props.bankName
-                }
-              </div>
-            }
-            {
-              this.props.isBankNameEditting &&
-              <div className={style.bankName}>
-                <input
-                  type="type"
-                  placeholder="Bank Name"
-                  contentEditable="true"
-                  value={this.props.bankName}
-                  style={{width: '60vw'}}
-                  onChange={this.props.handleBankNameChange}
+          {
+            this.props.onCreate &&
+            <div className={style.bankTitle}>
+              {
+                !this.props.isBankNameEditting &&
+                <div
+                  className={style.bankName}
+                  style={!this.props.isBankNameEditting ? {'borderBottom': '1px solid grey'} : {}}
+                  onClick={() => this.props.handleBankNameEditToggle(true)}
                 >
-                </input>
-              </div>
-            }
-            <div className={style.bankEditButton}>
+                  {
+                    this.props.bankName === '' &&
+                    "Enter bank name"
+                  }
+                  {
+                    this.props.bankName !== '' &&
+                    this.props.bankName
+                  }
+                </div>
+              }
               {
                 this.props.isBankNameEditting &&
-                <i class="fa fa-check-square fa-2x" aria-hidden="true" onClick={() => this.props.handleBankNameEditToggle(false)}></i>
+                <div className={style.bankName}>
+                  <input
+                    type="type"
+                    placeholder="Bank Name"
+                    contentEditable="true"
+                    value={this.props.bankName}
+                    style={{width: '60vw'}}
+                    onChange={this.props.handleBankNameChange}
+                  >
+                  </input>
+                </div>
               }
+              <div className={style.bankEditButton}>
+                {
+                  this.props.isBankNameEditting &&
+                  <i class="fa fa-check-square fa-2x" aria-hidden="true" onClick={() => this.props.handleBankNameEditToggle(false)}></i>
+                }
+              </div>
             </div>
-          </div>
+          }
+          {
+            this.props.inView &&
+            <div className={style.bankTitle}>
+              {this.props.bankName}
+            </div>
+          }
           <div className={style.bankOptions}>
             {
               this.props.onCreate &&
@@ -61,11 +68,11 @@ export default class Header extends React.Component {
               </ButtonGroup>
             }
             {
-              !this.props.onCreate &&
+              this.props.inView &&
               <ButtonGroup>
-                <Button bsStyle="primary">Back to List</Button>
+                <Button bsStyle="primary" onClick={this.props.discardChanges}>Back</Button>
                 <Button bsStyle="primary">Edit</Button>
-                <Button bsStyle="primary">Create New</Button>
+                <Button bsStyle="primary" onClick={this.props.onCreateNewButtonClick}>Create New</Button>
               </ButtonGroup>
             }
           </div>

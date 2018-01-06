@@ -11,11 +11,12 @@ const getInstance = () => {
       'withCredentials': true
     });
   }
+
   return instance;
 };
 
 const login = (data) => {
-  return getInstance().post("/auth/login",data);
+  return getInstance().post("/auth/login", data);
 };
 
 const isAuthenticated = () => {
@@ -23,11 +24,11 @@ const isAuthenticated = () => {
 };
 
 const startBank = (data) => {
-  return getInstance().post("/banks",data);
+  return getInstance().post("/banks", data);
 }
 
 const addQuestion = (data, bankId) => {
-  return getInstance().post("/banks/" + bankId + "/questions",data);
+  return getInstance().post("/banks/" + bankId + "/questions", data);
 }
 
 const getAllBanks = () => {

@@ -82,7 +82,7 @@ export default class Nav extends React.Component {
     return (
       <div className={style.nav}>
         <div className={style.title}>
-          <h2>Buzzer</h2>
+          <h2>BigBuzzr</h2>
         </div>
         <div className={style.item} onClick={() => {return this.state.inQuiz ? this.setState({...this.state, atGamePlay: !this.state.atGamePlay}) : null;}}>
           {

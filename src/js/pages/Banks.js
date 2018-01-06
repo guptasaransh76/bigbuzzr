@@ -5,7 +5,7 @@ import Sidebar from "../components/bank/Sidebar";
 import Body from "../components/bank/Body";
 import Viewbanks from "../components/bank/Viewbanks";
 import style from "../../css/bank.css";
-import {startBank, addQuestion, getAllBanks} from "../api/axios";
+import {startBank, addQuestion, getAllBanks, popListWithQuestion} from "../api/axios";
 
 export default class Banks extends React.Component {
   constructor(props) {
@@ -24,7 +24,11 @@ export default class Banks extends React.Component {
       error: '',
       isBankNameEditting: false,
       onCreate: false,
-      results: []
+      inView: false,
+      results: undefined,
+      inView: false,
+      viewBankId: 0,
+      resultsForView: []
     };
   }
 
@@ -183,11 +187,13 @@ export default class Banks extends React.Component {
   onCreateNewButtonClick = (evt) => {
     this.setState({
       ...this.state,
-      onCreate: true
+      onCreate: true,
+      inView: false
     });
   }
 
   discardChanges = (evt) => {
+    console.log('in discard changes');
     this.setState({
       ...this.state,
       ques: '',
@@ -202,7 +208,8 @@ export default class Banks extends React.Component {
       optionChecked: 0,
       error: '',
       isBankNameEditting: false,
-      onCreate: false
+      onCreate: false,
+      inView: false,
     });
   }
 
@@ -217,6 +224,7 @@ export default class Banks extends React.Component {
             results: response.data.data
           });
         } else {
+          console.log("in here");
           this.setState({
             ...this.state,
             results: undefined
@@ -224,6 +232,7 @@ export default class Banks extends React.Component {
         }
       })
       .catch((err) => {
+        console.log("in here");
         this.setState({
           ...this.state,
           results: undefined
@@ -231,6 +240,41 @@ export default class Banks extends React.Component {
       });
   }
 
+  handleViewClick = (evt, bankId) => {
+    console.log('before setting',bankId);
+    this.setState({
+      inView: true,
+      viewBankId: bankId
+    });
+
+    // popListWithQuestion()
+    //   .then((response) => {
+    //     console.log(response);
+    //     debugger;
+    //     if (response.data.status === 'success') {
+    //       this.setState({
+    //         ...this.state,
+    //         resultsForView: response.data.data
+    //       });
+    //     } else {
+    //       console.log("in here");
+    //       debugger;
+    //       this.setState({
+    //         ...this.state,
+    //         resultsForView: undefined
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("in here");
+    //     debugger;
+    //     this.setState({
+    //       ...this.state,
+    //       resultsForView: undefined
+    //     });
+    //   });
+
+  }
 
   // saveQuestions = () => {
   //   console.log('Save clicked')
@@ -271,57 +315,64 @@ export default class Banks extends React.Component {
   render() {
     return (
       <div>
-        {this.state.onCreate &&
-        <div>
-          <Header
-            onCreate={this.state.onCreate}
-            isBankNameEditting={this.state.isBankNameEditting}
-            bankName={this.state.bankName}
-            handleBankNameChange={this.handleBankNameChange}
-            handleBankNameEditToggle={this.handleBankNameEditToggle}
-            discardChanges={this.discardChanges}
-          />
+        {
+          (this.state.onCreate || this.state.inView) &&
+          <div>
+            <Header
+              onCreate={this.state.onCreate}
+              inView={this.state.inView}
+              isBankNameEditting={this.state.isBankNameEditting}
+              bankName={this.state.bankName}
+              handleBankNameChange={this.handleBankNameChange}
+              handleBankNameEditToggle={this.handleBankNameEditToggle}
+              discardChanges={this.discardChanges}
+              onCreateNewButtonClick={this.onCreateNewButtonClick}
+            />
 
-          <div className={style.partition}>
-            <div className={style.left}>
-              <Sidebar
-                quesarr={this.state.quesarr}
-                loadQuestion={this.loadQuestion}
-              />
-            </div>
+            <div className={style.partition}>
+              <div className={style.left}>
+                <Sidebar
+                  quesarr={this.state.quesarr}
+                  onCreate={this.state.onCreate}
+                  loadQuestion={this.loadQuestion}
+                />
+              </div>
 
-            <div className={style.right}>
-              <Body
-                ques={this.state.ques}
-                options={this.state.options}
-                optionChecked={this.state.optionChecked}
-                error={this.state.error}
-                handleQuestionChange={this.handleQuestionChange}
-                onOptionCheckedChange={this.onOptionCheckedChange}
-                handleOptionNameChange={this.handleOptionNameChange}
-                handleRemoveOption={this.handleRemoveOption}
-                handleAddOption={this.handleAddOption}
-                handleSubmit={this.handleSubmit}
-              />
+              <div className={style.right}>
+                <Body
+                  ques={this.state.ques}
+                  options={this.state.options}
+                  optionChecked={this.state.optionChecked}
+                  error={this.state.error}
+                  handleQuestionChange={this.handleQuestionChange}
+                  onOptionCheckedChange={this.onOptionCheckedChange}
+                  handleOptionNameChange={this.handleOptionNameChange}
+                  handleRemoveOption={this.handleRemoveOption}
+                  handleAddOption={this.handleAddOption}
+                  handleSubmit={this.handleSubmit}
+                />
+              </div>
             </div>
           </div>
-        </div>
         }
-        {!this.state.onCreate &&
-        <div className={style.bankPage}>
-          <Header
-            onCreate={this.state.onCreate}
-            isBankNameEditting={this.state.isBankNameEditting}
-            bankName={this.state.bankName}
-            handleBankNameChange={this.handleBankNameChange}
-            handleBankNameEditToggle={this.handleBankNameEditToggle}
-            onCreateNewButtonClick={this.onCreateNewButtonClick}
-          />
-          <Viewbanks
-            results={this.state.results}
-          />
-        </div>
+        {
+          !(this.state.onCreate || this.state.inView) &&
+          <div className={style.bankPage}>
+            <Header
+              onCreate={this.state.onCreate}
+              isBankNameEditting={this.state.isBankNameEditting}
+              bankName={this.state.bankName}
+              handleBankNameChange={this.handleBankNameChange}
+              handleBankNameEditToggle={this.handleBankNameEditToggle}
+              onCreateNewButtonClick={this.onCreateNewButtonClick}
+            />
+            <Viewbanks
+              inView={this.state.inView}
+              results={this.state.results}
+              handleViewClick={this.handleViewClick}
+            />
 
+          </div>
         }
       </div>
     );

@@ -43,6 +43,7 @@
     height: 85vh;
     background-color: #f9f9f9;
     flex-direction: column;
+    padding-top: 7vh;
 }
 
 .right {
@@ -62,6 +63,14 @@
 
 .leftbox {
     background-color: white;
+    width: 30vw;
+    padding-left: 2vw;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 1vw;
+    margin-bottom: 0.5vh;
+    min-height: 10vh;
 }
 
 .jumbo {
