@@ -7,6 +7,9 @@ const getInstance = () => {
     instance = axios.create({
       'baseURL' : 'http://localhost:8080/api',
       headers: { 'Content-Type': 'application/json' },
+      'origin': '*',
+      'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      'preflightContinue': false,
       'xsrfCookieName': 'Buzzer-Session',
       'withCredentials': true
     });
@@ -43,6 +46,14 @@ const popListWithQuestion = (bankId) => {
   return getInstance().get("/quiz/" + bankId + "/questions");
 }
 
+const inViewQuestions = (bankId) => {
+  return getInstance().get("/banks/" + bankId + "/questions");
+}
+
+const updateQuestion = (data, bankId, quesId) => {
+  return getInstance().patch("/banks/" + bankId + "/question/" + quesId, data);
+}
+
 const logout = (data) => {
   return getInstance().post("/auth/logout", data);
 }
@@ -55,3 +66,5 @@ module.exports.addQuestion = addQuestion;
 module.exports.getAllBanks = getAllBanks;
 module.exports.popListWithBank = popListWithBank;
 module.exports.popListWithQuestion = popListWithQuestion;
+module.exports.inViewQuestions = inViewQuestions;
+module.exports.updateQuestion = updateQuestion;

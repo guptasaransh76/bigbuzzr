@@ -73,7 +73,12 @@ export default class Body extends React.Component {
               </FormGroup>
               <FormGroup style={{marginLeft: "2vw"}}>
                 <Col>
-                  <Button bsStyle="success" onClick={this.props.handleSubmit}> Submit </Button>
+                  <Button
+                    bsStyle="success"
+                    disabled={(this.props.bankName === '' || this.props.options.length < 4)}
+                    onClick={this.props.handleSubmit}>
+                    Submit Question
+                  </Button>
                 </Col>
               </FormGroup>
             </Form>

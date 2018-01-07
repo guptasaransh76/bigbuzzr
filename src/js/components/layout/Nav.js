@@ -82,9 +82,12 @@ export default class Nav extends React.Component {
     return (
       <div className={style.nav}>
         <div className={style.title}>
-          <h2>BigBuzzr</h2>
+          <a href="/" style={{color: "white", textDecoration: "none"}}><h2>BigBuzzr</h2></a>
         </div>
-        <div className={style.item} onClick={() => {return this.state.inQuiz ? this.setState({...this.state, atGamePlay: !this.state.atGamePlay}) : null;}}>
+        <div
+          className={style.item}
+          onClick={() => {return this.state.inQuiz ? this.setState({...this.state, atGamePlay: !this.state.atGamePlay}) : null;}}
+        >
           {
             this.state.user &&
             <span className={style.nonNavItems}>{this.state.user.name}</span>

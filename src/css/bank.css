@@ -21,6 +21,8 @@
 .bankTitle {
     display: flex;
     justify-content: flex-start;
+    font-weight: bold;
+    margin-left: 2vw;
 }
 
 .bankName {
@@ -79,4 +81,23 @@
     width: 70vw;
     padding-top: 7vh;
     padding-bottom: 5vh;
+}
+
+.addbutton {
+    float: right;
+    margin-right: 1vw;
+    margin-bottom: 0.5vh;
+    background: #2f3033;
+    color: white;
+    font-size: 11px;
+    height: 6vh;
+    width: 10vw;
+    border-radius: 0.25rem;
+    text-align: center;
+    touch-action: manipulation;
+    text-transform: uppercase;
+}
+
+button:focus {
+    outline:0;
 }

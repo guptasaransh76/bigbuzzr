@@ -71,8 +71,7 @@ export default class Header extends React.Component {
               this.props.inView &&
               <ButtonGroup>
                 <Button bsStyle="primary" onClick={this.props.discardChanges}>Back</Button>
-                <Button bsStyle="primary">Edit</Button>
-                <Button bsStyle="primary" onClick={this.props.onCreateNewButtonClick}>Create New</Button>
+                {/*<Button bsStyle="primary" onClick={this.props.onCreateNewButtonClick}>Create New</Button>*/}
               </ButtonGroup>
             }
           </div>

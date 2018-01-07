@@ -5,7 +5,7 @@ import Sidebar from "../components/bank/Sidebar";
 import Body from "../components/bank/Body";
 import Viewbanks from "../components/bank/Viewbanks";
 import style from "../../css/bank.css";
-import {startBank, addQuestion, getAllBanks, popListWithQuestion} from "../api/axios";
+import {startBank, addQuestion, getAllBanks, popListWithQuestion, inViewQuestions, updateQuestion} from "../api/axios";
 
 export default class Banks extends React.Component {
   constructor(props) {
@@ -28,7 +28,8 @@ export default class Banks extends React.Component {
       results: undefined,
       inView: false,
       viewBankId: 0,
-      resultsForView: []
+      resultsForView: [],
+      serverQuesId: undefined
     };
   }
 
@@ -59,70 +60,14 @@ export default class Banks extends React.Component {
     this.setState({options: newOptions});
   }
 
-  handleSubmit = (evt) => {
-    const {ques, options, quesId, optionChecked} = this.state;
-    console.log(this.state.quesId);
-    console.log('starting Bank');
-
-    let data = {
-      bank_name: this.state.bankName,
-      question: this.state.ques,
-      option_1: options[0].opName,
-      option_2: options[1].opName,
-      option_3: options[2].opName,
-      option_4: options[3].opName,
-      answer: optionChecked
-    };
-
-    if (this.state.bankId === -1) {
-      console.log('starting Bank');
-      startBank(JSON.stringify(data)).then((response) => {
-        console.log(response);
-
-        if (response.data.status === 'success') {
-          this.setState({
-            ...this.state,
-            bankId: response.data.data.bank_id,
-            error: ''
-          });
-
-        } else {
-          this.setState({
-            ...this.state,
-            error: response.data.message
-          });
-        }
-      }).catch((error) => {
-        console.log(error);
-      });
-
-    } else {
-      data.bank_id = this.state.bankId;
-      addQuestion(JSON.stringify(data), this.state.bankId).then((response) => {
-        console.log(response);
-
-        if (response.data.status === 'success') {
-          this.setState({
-            ...this.state,
-            error: ''
-          });
-
-        } else {
-          this.setState({
-            ...this.state,
-            error: response.data.message
-          });
-        }
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-
+  updateStateAfterSubmit = (quesId, ques, options, optionChecked, serverQuesId, bankId) => {
     let quesarr = this.state.quesarr;
     quesarr[quesId] = ({
+      quesId,
       ques,
       options,
-      optionChecked
+      optionChecked,
+      serverQuesId
     });
 
     this.setState({
@@ -134,14 +79,78 @@ export default class Banks extends React.Component {
         opName: "",
         idx: 0
       }],
-      optionChecked: 0
+      optionChecked: 0,
+      serverQuesId: undefined,
+      bankId: bankId ? bankId : this.state.bankId
     });
 
+  };
 
-    setTimeout(() => {
-      console.log(this.state);
-    }, 1000);
+  handleSubmit = (evt) => {
+    let {ques, options, quesId, optionChecked, serverQuesId} = this.state;
+    let data = {
+      bank_name: this.state.bankName,
+      question: this.state.ques,
+      option_1: options[0].opName,
+      option_2: options[1].opName,
+      option_3: options[2].opName,
+      option_4: options[3].opName,
+      answer: optionChecked
+    };
+    if(!serverQuesId) {
+      if (this.state.bankId === -1) {
+        startBank(JSON.stringify(data)).then((response) => {
+          console.log(response);
 
+          if (response.data.status === 'success') {
+            serverQuesId = response.data.data.question_id;
+            const bankId = response.data.data.bank_id;
+            this.updateStateAfterSubmit(quesId, ques, options, optionChecked, serverQuesId, bankId);
+
+          } else {
+            this.setState({
+              ...this.state,
+              error: response.data.message
+            });
+          }
+        }).catch((error) => {
+          console.log(error);
+        });
+
+      } else {
+        data.bank_id = this.state.bankId;
+        addQuestion(JSON.stringify(data), this.state.bankId).then((response) => {
+          if (response.data.status === 'success') {
+            serverQuesId = response.data.data[0].question_id;
+            this.updateStateAfterSubmit(quesId, ques, options, optionChecked, serverQuesId);
+          } else {
+            this.setState({
+              ...this.state,
+              error: response.data.message
+            });
+          }
+        }).catch((error) => {
+          console.log(error);
+        });
+
+        console.log(1412141);
+      }
+    }else{
+      console.log("Patch Request");
+      updateQuestion(JSON.stringify(data),this.state.bankId, serverQuesId).then((response) => {
+
+        if (response.data.status === 'success') {
+          this.updateStateAfterSubmit(quesId, ques, options, optionChecked, serverQuesId);
+        } else {
+          this.setState({
+            ...this.state,
+            error: response.data.message
+          });
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
   };
 
   handleAddOption = () => {
@@ -165,16 +174,17 @@ export default class Banks extends React.Component {
     });
   }
 
-  loadQuestion = (index) => {
+  loadQuestion = (index, questionId) => {
     const {quesId, quesarr} = this.state;
-    console.log(index);
-    this.setState({
-      ...this.state,
-      ques: quesarr[index].ques,
-      quesId: index,
-      options: quesarr[index].options,
-      optionChecked: quesarr[index].optionChecked
-    });
+
+      this.setState({
+        ...this.state,
+        ques: quesarr[index].ques,
+        quesId: index,
+        options: quesarr[index].options,
+        optionChecked: quesarr[index].optionChecked,
+        serverQuesId: quesarr[index].serverQuesId
+      });
   };
 
   handleBankNameEditToggle = (isEditting) => {
@@ -188,8 +198,24 @@ export default class Banks extends React.Component {
     this.setState({
       ...this.state,
       onCreate: true,
-      inView: false
+      inView: false,
     });
+  }
+
+  onAddNewButtonClick = (evt) => {
+    console.log("Add new clicked", this.state.quesarr);
+    this.setState({
+      ...this.state,
+      quesarr: this.state.quesarr,
+      ques: '',
+      quesId: this.state.quesarr.length,
+      options: [{
+        opName: "",
+        idx: 0
+      }],
+      optionChecked: 0,
+      serverQuesId: undefined
+  });
   }
 
   discardChanges = (evt) => {
@@ -211,10 +237,11 @@ export default class Banks extends React.Component {
       onCreate: false,
       inView: false,
     });
+
+    this.reloadAllBanks();
   }
 
-  componentWillMount() {
-    console.log('Banks - component is mounting');
+  reloadAllBanks = () => {
     getAllBanks()
       .then((response) => {
         console.log(response);
@@ -240,39 +267,67 @@ export default class Banks extends React.Component {
       });
   }
 
+  componentWillMount() {
+    console.log('Banks - component is mounting');
+    this.reloadAllBanks();
+  }
+
   handleViewClick = (evt, bankId) => {
-    console.log('before setting',bankId);
     this.setState({
       inView: true,
-      viewBankId: bankId
+      viewBankId: bankId,
+      bankId: bankId
     });
 
-    // popListWithQuestion()
-    //   .then((response) => {
-    //     console.log(response);
-    //     debugger;
-    //     if (response.data.status === 'success') {
-    //       this.setState({
-    //         ...this.state,
-    //         resultsForView: response.data.data
-    //       });
-    //     } else {
-    //       console.log("in here");
-    //       debugger;
-    //       this.setState({
-    //         ...this.state,
-    //         resultsForView: undefined
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log("in here");
-    //     debugger;
-    //     this.setState({
-    //       ...this.state,
-    //       resultsForView: undefined
-    //     });
-    //   });
+    inViewQuestions(bankId)
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === 'success') {
+          let quesArr = [];
+          for (let i = 0; i < response.data.data.length; i++) {
+            const quesRow = response.data.data[i];
+
+            let options = [];
+            for(let j = 1; j < 5; j++) {
+              const optionKeyName = "option_" + j;
+              options.push({
+                opName: quesRow[optionKeyName],
+                idx: j - 1
+              });
+            }
+
+            quesArr.push({
+              quesId: i,
+              serverQuesId: quesRow.question_id,
+              ques: quesRow.question,
+              options,
+              optionChecked: quesRow.answer
+            });
+          }
+          this.setState({
+            ...this.state,
+            resultsForView: response.data.data,
+            bankName: response.data.data[0].bank_name,
+            quesarr: quesArr,
+            quesId: quesArr.length
+          });
+        } else {
+          debugger;
+          console.log("in here");
+          this.setState({
+            ...this.state,
+            resultsForView: undefined
+          });
+        }
+      })
+      .catch((err) => {
+        debugger;
+        console.log("in here");
+        this.setState({
+          ...this.state,
+          resultsForView: undefined
+        });
+      });
 
   }
 
@@ -333,17 +388,26 @@ export default class Banks extends React.Component {
               <div className={style.left}>
                 <Sidebar
                   quesarr={this.state.quesarr}
+                  resultsForView={this.state.resultsForView}
+                  inView={this.state.inView}
                   onCreate={this.state.onCreate}
+                  bankId={this.state.bankId}
+                  serverQuesId={this.state.serverQuesId}
+                  resultsForView={this.state.resultsForView}
                   loadQuestion={this.loadQuestion}
+                  onAddNewButtonClick={this.onAddNewButtonClick}
                 />
               </div>
 
               <div className={style.right}>
                 <Body
+                  bankName={this.state.bankName}
+                  quesarr={this.state.quesarr}
                   ques={this.state.ques}
                   options={this.state.options}
                   optionChecked={this.state.optionChecked}
                   error={this.state.error}
+                  serverQuesId={this.state.serverQuesId}
                   handleQuestionChange={this.handleQuestionChange}
                   onOptionCheckedChange={this.onOptionCheckedChange}
                   handleOptionNameChange={this.handleOptionNameChange}
