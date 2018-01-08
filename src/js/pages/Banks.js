@@ -97,12 +97,13 @@ export default class Banks extends React.Component {
       option_4: options[3].opName,
       answer: optionChecked
     };
-    if(!serverQuesId) {
+    if (!serverQuesId) {
       if (this.state.bankId === -1) {
         startBank(JSON.stringify(data)).then((response) => {
           console.log(response);
 
           if (response.data.status === 'success') {
+            console.log(response);
             serverQuesId = response.data.data.question_id;
             const bankId = response.data.data.bank_id;
             this.updateStateAfterSubmit(quesId, ques, options, optionChecked, serverQuesId, bankId);
@@ -132,12 +133,10 @@ export default class Banks extends React.Component {
         }).catch((error) => {
           console.log(error);
         });
-
-        console.log(1412141);
       }
-    }else{
+    } else {
       console.log("Patch Request");
-      updateQuestion(JSON.stringify(data),this.state.bankId, serverQuesId).then((response) => {
+      updateQuestion(JSON.stringify(data), this.state.bankId, serverQuesId).then((response) => {
 
         if (response.data.status === 'success') {
           this.updateStateAfterSubmit(quesId, ques, options, optionChecked, serverQuesId);
@@ -177,14 +176,14 @@ export default class Banks extends React.Component {
   loadQuestion = (index, questionId) => {
     const {quesId, quesarr} = this.state;
 
-      this.setState({
-        ...this.state,
-        ques: quesarr[index].ques,
-        quesId: index,
-        options: quesarr[index].options,
-        optionChecked: quesarr[index].optionChecked,
-        serverQuesId: quesarr[index].serverQuesId
-      });
+    this.setState({
+      ...this.state,
+      ques: quesarr[index].ques,
+      quesId: index,
+      options: quesarr[index].options,
+      optionChecked: quesarr[index].optionChecked,
+      serverQuesId: quesarr[index].serverQuesId
+    });
   };
 
   handleBankNameEditToggle = (isEditting) => {
@@ -215,7 +214,7 @@ export default class Banks extends React.Component {
       }],
       optionChecked: 0,
       serverQuesId: undefined
-  });
+    });
   }
 
   discardChanges = (evt) => {
@@ -288,7 +287,7 @@ export default class Banks extends React.Component {
             const quesRow = response.data.data[i];
 
             let options = [];
-            for(let j = 1; j < 5; j++) {
+            for (let j = 1; j < 5; j++) {
               const optionKeyName = "option_" + j;
               options.push({
                 opName: quesRow[optionKeyName],
@@ -331,41 +330,28 @@ export default class Banks extends React.Component {
 
   }
 
-  // saveQuestions = () => {
-  //   console.log('Save clicked')
-  //
-  //
-  //   let data = JSON.stringify({
-  //     bank_name: this.state.bankName,
-  //     question: this.state.ques,
-  //     option_1: options[0].opName,
-  //     option_2: options[1].opName,
-  //     option_3: options[2].opName,
-  //     option_4: options[3].opName,
-  //     answer: optionChecked
-  //   })
-  //   console.log(data);
-  //
-  //   addQuestion(data).then((response) => {
-  //     console.log(response);
-  //
-  //     if (response.data.status === 'success') {
-  //       this.setState({
-  //         ...this.state,
-  //         error: ''
-  //       });
-  //
-  //     } else {
-  //       this.setState({
-  //         ...this.state,
-  //         error: response.data.message
-  //       });
-  //     }
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   });
-  //
-  // }
+  saveBankClick = (evt) => {
+    console.log('in save click');
+    this.setState({
+      ...this.state,
+      ques: '',
+      quesId: 0,
+      quesarr: [],
+      options: [{
+        opName: '',
+        idx: ''
+      }],
+      bankId: 0,
+      bankName: '',
+      optionChecked: 0,
+      error: '',
+      isBankNameEditting: false,
+      onCreate: false,
+      inView: false,
+    });
+
+    this.reloadAllBanks();
+  }
 
   render() {
     return (
@@ -382,6 +368,7 @@ export default class Banks extends React.Component {
               handleBankNameEditToggle={this.handleBankNameEditToggle}
               discardChanges={this.discardChanges}
               onCreateNewButtonClick={this.onCreateNewButtonClick}
+              saveBankClick={this.saveBankClick}
             />
 
             <div className={style.partition}>

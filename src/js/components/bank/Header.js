@@ -64,7 +64,7 @@ export default class Header extends React.Component {
               this.props.onCreate &&
               <ButtonGroup>
                 <Button bsStyle="primary" onClick={this.props.discardChanges}>Discard</Button>
-                <Button bsStyle="primary">Save Bank</Button>
+                <Button bsStyle="primary" onClick={this.props.saveBankClick}>Save Bank</Button>
               </ButtonGroup>
             }
             {

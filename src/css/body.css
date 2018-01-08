@@ -1,0 +1,66 @@
+.form {
+    margin-left: 1vw;
+    max-width: 100%;
+    overflow-x: hidden;
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+label {
+    margin-left: 1vw;
+}
+
+.input {
+    width: 40vw;
+    margin-left: 1vw;
+}
+
+input {
+    border:1px solid #cccccc;
+    padding: 0.7vw;
+}
+
+input:focus {
+    outline: none;
+}
+
+input[type=text]{
+    border-radius: 1vh;
+    text-decoration: none;
+    height: 6vh;
+}
+
+input::placeholder {
+    color: lightgrey;
+}
+
+.options {
+    margin-top: 3vh;
+    margin-left: 1.1vw;
+}
+
+.optionText {
+    width: 35vw;
+
+}
+
+.addButton {
+    margin: 2vh;
+    height: 6vh;
+    width: 4vw;
+    border-radius: 1vh;
+}
+
+.addOptions {
+    border: 1px solid black;
+    height: auto;
+    width: auto;
+    border-radius: 1vh;
+}
+
+.delButton {
+    margin-left: 1vw;
+}
+
+.radio {
+    margin-right: 1vw;
+}
