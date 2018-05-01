@@ -1,4 +1,23 @@
+
+.box {
+    background: aliceblue;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
 .img {
-    width: 100vw;
-    height: 70vh;
+    width: 99.95vw;
+    height: 85vh;
+    margin-left: 0.03vw;
+    overflow: hidden;
+
+}
+
+.right {
+    margin-top: 4vh;
+    margin-left: 3vw;
+    height: 75vh;
+    width: 30vw;
+    border: 1px red solid;
 }

@@ -66,7 +66,7 @@ export default class Login extends React.Component {
     return (
       <div className={style.form}>
         <div className={style.label}>
-          <h2>BigBuzzr</h2>
+          <h2><a href="/" style={{textDecoration: "none", color: "black"}}>BigBuzzr</a></h2>
         </div>
         <Jumbotron style={{paddingLeft: "1vw", paddingRight: "1vw"}}>
           <Form horizontal>

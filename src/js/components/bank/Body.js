@@ -29,7 +29,7 @@ export default class Body extends React.Component {
               <label style={{marginLeft: "-0.15vw"}}>Options</label>
               <div>
                 {this.props.options.map((option, idx) => (
-                  <div>
+                  <div key={'bankId' + idx}>
                     <div class="input-prepend input-append" style={{width: "48vw", marginBottom: "1vh"}}>
 
                       <input type="radio"
@@ -42,9 +42,14 @@ export default class Body extends React.Component {
                              value={option.opName}
                              onChange={this.props.handleOptionNameChange(idx)}
                              className={style.optionText}
+                             required="true"
                       />
 
-                      <i className={"fa fa-times fa-lg " + style.delButton}  aria-hidden="true" onClick={this.props.handleRemoveOption(idx)}></i>
+                      <i
+                        className={"fa fa-times fa-lg " + style.delButton}
+                        aria-hidden="true"
+                        onClick={this.props.handleRemoveOption(idx)}
+                      />
                     </div>
                   </div>
                 ))}
@@ -52,7 +57,7 @@ export default class Body extends React.Component {
               <div className={style.addButton}>
                 <Button
                   onClick={this.props.handleAddOption}
-                  disabled={this.props.options.length >= 4}
+                  disabled={this.props.options && this.props.options.length >= 4}
                 >
                   ADD
                 </Button>

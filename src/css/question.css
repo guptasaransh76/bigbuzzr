@@ -1,0 +1,36 @@
+.option1 {
+    height: 13vh;
+    width: 20vw;
+
+}
+
+.option2 {
+
+    margin-left: 3vw;
+    height: 13vh;
+    width: 20vw;
+}
+
+.option3 {
+
+    margin-top: 2vh;
+    height: 13vh;
+    width: 20vw;
+}
+
+.option4 {
+
+    margin-left: 3vw;
+    margin-top: 2vh;
+    height: 13vh;
+    width: 20vw;
+}
+
+.optionPanel {
+    margin-left: 4vw;
+}
+
+.jumbo {
+    margin-left: 15vw;
+    margin-right: 15vw;
+}

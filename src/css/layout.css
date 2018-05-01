@@ -32,3 +32,17 @@
     color: #dddddd;
     z-index: 2000;
 }
+
+.main_panel {
+    height: 75vh;
+    width: 90vw;
+    background: lightgrey;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 1vw;
+}

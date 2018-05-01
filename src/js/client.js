@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Master from "./pages/Master";
 import Banks from "./pages/Banks";
 import Quiz from "./pages/Quiz";
+import Game from "./pages/Game";
+import Participant from "./pages/Participant";
 
 const app = document.getElementById('app');
 
@@ -41,6 +43,8 @@ ReactDOM.render(
       <Route path="master" name="master" component={Master} onEnter={requireAuth}></Route>
       <Route path="bank" name="bank" component={Banks} onEnter={requireAuth}></Route>
       <Route path="quiz" name="quiz" component={Quiz} onEnter={requireAuth}></Route>
+      <Route path="game" name="game" component={Game} onEnter={requireAuth}></Route>
+      <Route path="participant" name="participant" component={Participant}></Route>
     </Route>
   </Router>,
   app);

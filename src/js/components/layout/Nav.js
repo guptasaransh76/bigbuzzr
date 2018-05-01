@@ -93,7 +93,7 @@ export default class Nav extends React.Component {
             <span className={style.nonNavItems}>{this.state.user.name}</span>
           }
           { !this.state.inQuiz &&
-            <Link to="quiz" className={style.navItems} onClick={this.toggleCollapse.bind(this)}>Quiz</Link>
+            <Link to="Quiz" className={style.navItems} onClick={this.toggleCollapse.bind(this)}>Play</Link>
           }
           { !this.state.inBank &&
             <Link to="bank" className={style.navItems} onClick={this.toggleCollapse.bind(this)}>Question Banks</Link>

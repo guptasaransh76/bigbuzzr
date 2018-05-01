@@ -154,6 +154,7 @@ export default class Banks extends React.Component {
 
   handleAddOption = () => {
     const {options, idx} = this.state;
+    console.log('add clicked', options);
     this.setState({
       options: this.state.options.concat([{opName: ''}]),
     });
