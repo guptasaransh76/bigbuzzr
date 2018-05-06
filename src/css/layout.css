@@ -34,15 +34,47 @@
 }
 
 .main_panel {
-    height: 75vh;
-    width: 90vw;
-    background: lightgrey;
+    height: 83vh;
+    width: 60vw;
+    /*background-image: url("../img/panel_bg.jpg");*/
+    /*background-repeat: repeat;*/
+    /*background-size: cover;*/
     padding-left: 2vw;
     padding-right: 2vw;
-    top:0;
+    padding-top: 5vh;
+    background: #f9f9f9;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     margin: auto;
     border-radius: 1vw;
+}
+
+.quit_bar {
+}
+
+.data {
+    width: 50vw;
+    height: 50vh;
+    padding: 3vh;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+
+.g_tag {
+    margin-left: 7vw;
+    margin-top: 5vh;
+}
+
+.button {
+    height: 13vh;
+    width: 35vw;
+    background: black;
+    color: white;
+    border-radius: 2vh;
+    font-size: 25px;
+    opacity: 0.8;
+    letter-spacing: 6px;
 }

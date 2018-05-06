@@ -47,7 +47,7 @@ export default class Quiz extends React.Component {
           const tag = quizId.concat(quizHash);
 
 
-          if(data.is_finished === 'incomplete'){
+          if (data.is_finished === 'incomplete') {
             this.setState({
               ...this.state,
               gameOn: true,
@@ -56,7 +56,7 @@ export default class Quiz extends React.Component {
             });
             console.log('quiz running:', this.state);
 
-          }else if(data.is_finished === 'complete'){
+          } else if (data.is_finished === 'complete') {
             console.log('complete');
             this.setState({
               ...this.state,
@@ -180,40 +180,38 @@ export default class Quiz extends React.Component {
       <div>
         {
           !this.state.gameOn &&
-            <div className={style.main_panel}>
-              <p>no game running</p>
-              <Button onClick={this.generateTag}>Generate Tag</Button>
+          <div className={style.main_panel}>
+            {/*<div className={style.data}>*/}
+            {/*</div>*/}
+
+            <div class="card-body" style={{marginLeft: "2vw"}}>
+              <h4 class="card-title">No Game Running</h4>
+              <p class="card-text">Press the button to generate a Gametag, which can by the teams to connect to
+                the Quiz.</p>
             </div>
+            <div className={style.g_tag}>
+              <Button className={style.button} onClick={this.generateTag}>Generate Tag</Button>
+            </div>
+
+          </div>
         }
         {
           this.state.gameOn &&
           <div className={style.main_panel}>
-            <p>Game Running. Use {this.state.gameTag} to join the Quiz.</p>
             {
               !this.state.inGame &&
-              <div>
-                <p>Game Details:</p>
-                <p>Quiz Id: {this.state.results.quiz_id}</p>
-                <p>Quiz Hash: {this.state.results.quiz_hash}</p>
-                <p>Created On: {this.state.results.creation_date}</p>
-                <Button onClick={this.Game}>Continue Game</Button>
-                {/*<p>{JSON.stringify(this.state)}</p>*/}
+              <div className={style.data}>
+                <h3 class="card-title" style={{fontWeight: "bold"}}>Game Running. </h3>
+                <h4 class="card-body">Use {this.state.gameTag} to join the Quiz.</h4>
+                <p class="card-text"><strong>Game Details:-</strong></p>
+                <p class="card-text">Quiz Id: {this.state.results.quiz_id}</p>
+                <p class="card-text">Quiz Hash: {this.state.results.quiz_hash}</p>
+                <p class="card-text">Created On: {this.state.results.creation_date}</p>
+                <div className={style.g_tag}>
+                  <Button className={style.button} onClick={this.Game}>Continue Game</Button>
+                </div>
               </div>
             }
-            {/*{*/}
-              {/*this.state.inGame &&*/}
-              {/*<div>*/}
-                {/*<p>{JSON.stringify(this.state)}</p>*/}
-                {/*<p>Game Tag: {this.state.gameTag}</p>*/}
-                {/*<p>Already Asked Questions: </p>*/}
-                {/*<p>Players: </p>*/}
-                {/*<p>Question: </p>*/}
-                {/*<Button onClick={this.handleQuit}>Quit Quiz</Button>*/}
-                {/**/}
-              {/*</div>*/}
-
-            {/*}*/}
-
           </div>
         }
 

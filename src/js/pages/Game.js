@@ -4,9 +4,12 @@ import {Link, Redirect} from "react-router";
 import {popListWithBank, popListWithQuestion, getAllBanks, getAllQuiz, startGame, quitCurrentQuiz} from "../api/axios";
 import Next from "../components/layout/Next";
 import Droplist from "../components/layout/Droplist";
+import Header from "../components/quiz/Gameheader";
+import Sidebar from "../components/quiz/Playerbar";
+import Body from "../components/quiz/Gamebody";
 import $ from "jquery";
 import {ControlLabel, FormControl, Form, FormGroup, Col, Jumbotron, Button} from "react-bootstrap";
-import style from "../../css/layout.css";
+import style from "../../css/bank.css";
 
 
 export default class Game extends React.Component {
@@ -28,7 +31,9 @@ export default class Game extends React.Component {
       gameOn: false,
       inGame: false,
       gameTag: '',
-      results: undefined
+      results: undefined,
+      questionResults: undefined,
+      gameResults: undefined
     };
   }
 
@@ -114,38 +119,36 @@ export default class Game extends React.Component {
         });
       });
 
-      startGame()
-        .then((response) => {
-          console.log(response);
-          if (response.data.status === 'success') {
+    startGame()
+      .then((response) => {
+        console.log('in start game');
+        console.log(response);
+        if (response.data.status === 'success') {
 
-            const data = response.data.data;
-            console.log('success', data);
+          const data = response.data.data;
+          console.log('success', data);
 
-            this.setState({
-              ...this.state,
-              results: data,
-              inGame: true
-              // isFinished: this.state.results.is_finished === 'complete',
-            });
-
-            browserHistory.push('/game');
-
-            console.log('results:', this.state.results);
-
-          } else {
-            this.setState({
-              ...this.state,
-              results: ''
-            });
-          }
-        })
-        .catch((err) => {
           this.setState({
             ...this.state,
-            results: ''
+            gameResults: data,
+            inGame: true
+            // isFinished: this.state.results.is_finished === 'complete',
           });
+          console.log('GameData', this.state.gameResults);
+
+        } else {
+          this.setState({
+            ...this.state,
+            gameResults: ''
+          });
+        }
+      })
+      .catch((err) => {
+        this.setState({
+          ...this.state,
+          gameResults: ''
         });
+      });
   }
 
   getValidationState() {
@@ -180,7 +183,7 @@ export default class Game extends React.Component {
     console.log(this.state.selectedBank);
     popListWithQuestion(this.state.selectedBank)
       .then((response) => {
-        console.log('in poplist',response);
+        console.log('in poplist', response);
         if (response.data.status === 'success') {
           let questions = [];
           const data = response.data.data;
@@ -212,7 +215,7 @@ export default class Game extends React.Component {
 
   }
 
-  handleQuit(){
+  handleQuit() {
     console.log('Quit was Clicked');
     quitCurrentQuiz()
       .then((response) => {
@@ -257,56 +260,48 @@ export default class Game extends React.Component {
   render() {
 
     return (
+
       <div>
-        <h3 style={{marginLeft: "4vw"}}>Let's Start</h3>
-        <Button onClick={this.handleQuit}>Quit Quiz</Button>
+        {/*<div class="row">*/}
+          {/*<div class="col-lg-8" style={{marginLeft: "5vw"}}>*/}
+            {/*<h3 class="card-title" style={{marginLeft: "15.5vw", marginTop: "0.5vh"}}>Let's Start</h3>*/}
+          {/*</div>*/}
+          {/*<div class="col-lg-3">*/}
+              {/*<Button class="btn btn-danger" onClick={this.handleQuit} style={{marginTop: "0.5vh"}}>Quit Quiz</Button>*/}
+          {/*</div>*/}
+        {/*</div>*/}
+        {/*<div className={style.main_panel}>*/}
+          {/*<div style={{marginLeft: "2vw"}}>*/}
+            {/*<p class="card-text">Game Tag: {this.state.gameTag}</p>*/}
+            {/*<p class="card-text">Already Asked Questions: </p>*/}
+            {/*<p class="card-text">Players: </p>*/}
+            {/*<p class="card-text">Question: </p><br />*/}
+          {/*</div>*/}
+          {/**/}
 
-        <p>{JSON.stringify(this.state)}</p>
-        <div className={style.main_panel}>
-            <div>
-            <p>Game Tag: {this.state.gameTag}</p>
-            <p>Already Asked Questions: </p>
-            <p>Players: </p>
-            <p>Question: </p>
-            </div>
+          {/*<Next*/}
+            {/*questions={this.state.questions}*/}
+            {/*whenChanged={this.handleBankChange}*/}
+          {/*/>*/}
+          {/**/}
+        {/*</div>*/}
 
-            {/*<FormGroup controlId="NameBank">*/}
-              {/*<Col componentClass={ControlLabel} sm={2}>*/}
-                {/*Name*/}
-              {/*</Col>*/}
-              {/*<Col sm={10}>*/}
-                {/*<FormControl type="text" value={this.state.value} placeholder="Name" onChange={this.handleChange}/>*/}
-              {/*</Col>*/}
-            {/*</FormGroup>*/}
+        <Header
+          handleQuit = {this.handleQuit}
+          gameTag= {this.state.gameTag }
+        />
 
-            <Next
-              questions={this.state.questions}
-              whenChanged={this.handleBankChange}
+        <div className={style.partition}>
+          <div className={style.left}>
+            <Sidebar
             />
+          </div>
 
-            {/*<FormGroup controlId="Bankid">*/}
-              {/*<Col componentClass={ControlLabel} sm={2}>*/}
-                {/*Bank ID*/}
-              {/*</Col>*/}
-              {/*<Col sm={10}>*/}
-                {/*<Droplist dataList={this.state.bankList} label={"Select Question Bank"}*/}
-                          {/*whenChanged={this.handleBankChange}/>*/}
-                {/*/!*<Button bsStyle="default" onClick={this.handleQuizStart}>Submit</Button>*!/*/}
-              {/*</Col>*/}
-            {/*</FormGroup>*/}
-
-            {/*<FormGroup>*/}
-              {/*<Col smOffset={2} sm={10}>*/}
-                {/*<Button bsStyle="default" onClick={this.handleQuizStart}>Submit</Button>*/}
-              {/*</Col>*/}
-            {/*</FormGroup>*/}
-          {/*{*/}
-            {/*this.state.isStarted &&*/}
-            {/*<Next*/}
-              {/*questions={this.state.questions}*/}
-              {/*whenChanged={this.handleBankChange}*/}
-            {/*/>*/}
-          {/*}*/}
+          <div className={style.right}>
+            <Body
+              gameResults={this.state.gameResults}
+            />
+          </div>
         </div>
       </div>
     );

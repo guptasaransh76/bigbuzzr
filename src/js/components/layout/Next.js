@@ -22,6 +22,7 @@ export default class Next extends React.Component {
         quesId: '',
         quesName: ''
       }],
+      points: 0
     };
   }
 
@@ -73,6 +74,15 @@ export default class Next extends React.Component {
       ...this.state,
       value: evt.target.value
     });
+  }
+
+  onChangeVal(key, value) {
+    let state = {
+      ...this.state
+    };
+    state[key] = value.target.value;
+
+    this.setState(state);
   }
 
   handleBankChange = (id) => {
@@ -130,7 +140,8 @@ export default class Next extends React.Component {
     console.log('Next Asked Question - clicked');
 
     let data = JSON.stringify({
-      questionId: this.state.nextQuestion
+      questionId: this.state.nextQuestion,
+      points: this.state.points
     });
     console.log(data);
 
@@ -139,7 +150,7 @@ export default class Next extends React.Component {
       if (response.data.status === 'success') {
         this.setState({
           ...this.state,
-          results: response.data.data[0],
+          results: response.data.data,
         });
 
         console.log('Question Data:', this.state.results);
@@ -188,19 +199,20 @@ export default class Next extends React.Component {
             </Col>
           </FormGroup>
 
+          <FormGroup>
+            <Col componentClass={ControlLabel} sm={5}>
+              Points Offered:
+            </Col>
+            <Col sm={10}>
+              <FormControl type="text" placeholder="Enter the Points" onChange={(val) => {
+                this.onChangeVal("points", val)
+              }}/>
+            </Col>
+          </FormGroup>
+
           <div class="control-group">
             <Button style={{marginLeft: "2vw"}} onClick={this.nextAskedQuestion}>Ask</Button>
           </div>
-
-
-          {/*<FormGroup controlId="NameBank">*/}
-          {/*<Col componentClass={ControlLabel} sm={4}>*/}
-          {/*Points Offered*/}
-          {/*</Col>*/}
-          {/*<Col sm={10}>*/}
-          {/*<FormControl type="number" placeholder="points for this question" step="100" min="100" max="500"/>*/}
-          {/*</Col>*/}
-          {/*</FormGroup>*/}
 
         </Form>
 

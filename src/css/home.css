@@ -1,23 +1,34 @@
 
 .box {
-    background: aliceblue;
-    display: flex;
-    flex-direction: row;
     overflow: hidden;
+    height: 100%;
+    background-image: url("../img/abc.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .img {
-    width: 99.95vw;
-    height: 85vh;
+
     margin-left: 0.03vw;
     overflow: hidden;
-
 }
 
-.right {
-    margin-top: 4vh;
-    margin-left: 3vw;
-    height: 75vh;
-    width: 30vw;
-    border: 1px red solid;
+.modal {
+    position: relative;
+    margin: 8vh;
+    width: 35vw;
+    height: 40vh;
+    background: #000;
+    opacity: 0.6;
+    color: white;
+    border-radius: 5px;
+    padding: 2vw;
+}
+
+.flink {
+    margin-left: 30vw;
+    color: white;
+    letter-spacing: 4px;
+    margin-top: 25vh;
 }
